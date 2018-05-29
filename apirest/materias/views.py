@@ -1,11 +1,15 @@
 from django.shortcuts import render
 from materias.models import materias
-from materias.serializers import materiaSerializer
+from materias.serializers import materiaSerializer, usuarioSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework import generics
+from django.contrib.auth.models import User
 
+class criarUsuario(generics.CreateAPIView) :
+    queryset = User.objects.all()
+    serializer_class = usuarioSerializer
 
 class listaDeMaterias(generics.ListCreateAPIView):
     queryset = materias.objects.all()
@@ -14,6 +18,7 @@ class listaDeMaterias(generics.ListCreateAPIView):
 class detalhesDasMaterias(generics.RetrieveUpdateDestroyAPIView):
     queryset = materias.objects.all()
     serializer_class = materiaSerializer
+
 
 
 # @api_view(['GET', 'POST'])
@@ -25,6 +30,7 @@ class detalhesDasMaterias(generics.RetrieveUpdateDestroyAPIView):
 #     if request.method == 'POST' :
 #         serializer = materiaSerializer(materias, data = request.data)
 #         if serializer.is_valid() :
+#             serializer.save()
 #             return Response(serializer.data)
 #         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
