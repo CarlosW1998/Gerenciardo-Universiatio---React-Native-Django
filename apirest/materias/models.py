@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models
 
 # Create your models here.
-
 class materias(models.Model) :
     nome = models.CharField(max_length=200)
     ab1 = models.DecimalField(max_digits=6, decimal_places=2)
@@ -16,5 +12,3 @@ class materias(models.Model) :
     carga_horaria = models.IntegerField()
     max_faltas = models.IntegerField()
     conceito = models.CharField(max_length=200)
-
-
