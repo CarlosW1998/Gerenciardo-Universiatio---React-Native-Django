@@ -6,16 +6,20 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework import generics
 from django.contrib.auth.models import User
+from rest_framework import permissions
 
 class criarUsuario(generics.CreateAPIView) :
+    permission_classes = (permissions.AllowAny,)
     queryset = User.objects.all()
     serializer_class = usuarioSerializer
 
 class listaDeMaterias(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = materias.objects.all()
     serializer_class = materiaSerializer
 
 class detalhesDasMaterias(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = materias.objects.all()
     serializer_class = materiaSerializer
 
