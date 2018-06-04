@@ -18,7 +18,7 @@ class criarUsuario(generics.CreateAPIView) :
 class listaDeMaterias(generics.ListCreateAPIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication)
     permission_classes = (permissions.IsAuthenticated,)
-    #queryset = materias.objects.filter()
+    queryset = materias.objects.filter()
     serializer_class = materiaSerializer
     def list(self, request) :
         lista = materias.objects.filter(usuario = request.user)
@@ -37,6 +37,25 @@ class detalhesDasMaterias(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = materias.objects.all()
     serializer_class = materiaSerializer
+    def retrieve(self, request, pk) :
+        try :
+            materia = materias.objects.filter(pk = pk, usuario = request.user)
+        except materias.DoesNotExist :
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = materiaSerializer(materia, many = True)
+        return Response(serializer.data)
+
+    def destroy(self, request, pk) :
+        try :
+            materia = materias.objects.filter(pk = pk, user = request.user)
+        except materias.DoesNotExist :
+            return Response(status=status.HTTP_404_NOT_FOUND) 
+        materia.delete()
+        return Response(status = status.HTTP_205_RESET_CONTENT)
+
+
+
+
 
 
 
@@ -57,7 +76,7 @@ class detalhesDasMaterias(generics.RetrieveUpdateDestroyAPIView):
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def detalhesDasMaterias(request, pk) :
 #     try :
-#         materia = materias.objects.get(pk = pk)
+#         materia = materias.objects.get(pk = pk and request.user = usuario)
 #     except materias.DoesNotExist :
 #         return Response(status=status.HTTP_404_NOT_FOUND)
 #     if request.method == 'GET' :
