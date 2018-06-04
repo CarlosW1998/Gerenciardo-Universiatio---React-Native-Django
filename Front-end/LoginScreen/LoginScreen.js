@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
 
-export default class Login extends React.Component {
+export default class LoginScreen extends React.Component {
 
   constructor (props){
     super(props);
@@ -14,12 +14,12 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} logged = {this.props.logged}>
 
 
         <TextInput placeholder = "Usuário" style={styles.textinputs}/>
         <TextInput placeholder = "Senha" style={styles.textinputs}/>
-        <Button title="Clicar" onPress={this.teste}/>
+        <Button title="Clicar" onPress={this.props.onPress}/>
 
       </View>
     );
