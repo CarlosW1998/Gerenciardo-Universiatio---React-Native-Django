@@ -12,6 +12,7 @@ export default class App extends React.Component {
       isLogged: false,
       user: '',
       pswd: '',
+      token: '',
     }
   }
 
@@ -22,9 +23,11 @@ export default class App extends React.Component {
         password: this.state.pswd,
       });
       const {token} = response.data;
-      console.warn(token);
-      //await AsyncStorage.setItem(["token", token]);
-      //console.warn("token: " + token);
+      this.setState({
+        token: token
+      });
+      await AsyncStorage.setItem(["@GerenciadorUniversitario:token", token]);
+      console.warn("token: " + token);
       this.setState({
         isLogged: true
       });
@@ -65,6 +68,7 @@ export default class App extends React.Component {
 
 
 
+
   render() {
     // return (
     //   <LoginScreen 
@@ -82,7 +86,7 @@ export default class App extends React.Component {
       );
     }else{
       return (
-        <MainScreen onPress={() => this.setState({isLogged : false})} />
+        <MainScreen onPress={() => this.setState({isLogged : false})} token = {this.state.token}/>
       );
     }
 
