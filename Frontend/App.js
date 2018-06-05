@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Api from './Networking/Api';
+import { AsyncStorage } from 'react-native';
+import api from './Networking/Api';
 import LoginScreen from './LoginScreen/LoginScreen';
 import MainScreen from './MainScreens/MainScreen';
 
@@ -11,10 +11,33 @@ export default class App extends React.Component {
     this.state = {isLogged: false}
   }
 
+  signIn = async () => {
+    try{
+      console.warn("1");
+      const response = await api.post('/api-token-auth/', {
+        username: "Lucas",
+        password: "lucas"
+      });
+      console.warn("2");
+      const {token} = response.data;
+      console.warn("3");
+      await AsyncStorage.setItem(["token", token]);
+      console.warn("token: " + token);
+    }catch (response){
+      console.error("kk eae men");
+    }
+
+    //console.warn(this.state.error);
+
+
+
+
+  };
+
 
   render() {
     return (
-      <MainScreen/>      
+      <MainScreen onPress = {this.signIn}/>      
     );
     
     // if(!this.state.isLogged){
@@ -33,12 +56,3 @@ export default class App extends React.Component {
 
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#3498db',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
