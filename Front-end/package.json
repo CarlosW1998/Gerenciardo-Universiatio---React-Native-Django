@@ -19,10 +19,12 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "ajax": "0.0.4",
     "apisauce": "^0.15.1",
     "create-react-native-app": "^1.0.0",
     "expo": "^27.0.1",
     "react": "16.3.1",
-    "react-native": "~0.55.2"
+    "react-native": "~0.55.2",
+    "react-navigation": "^2.1.0"
   }
 }
