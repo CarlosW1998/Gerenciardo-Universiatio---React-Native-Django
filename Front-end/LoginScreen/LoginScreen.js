@@ -8,7 +8,8 @@ export default class LoginScreen extends React.Component {
       <View style={styles.container} logged = {this.props.logged}>
 
         <TextInput 
-        placeholder = "Usuário" style={styles.textinputs}
+        placeholder = "Usuário" 
+        style={styles.textinputs}
         placeholderTextColor = "rgba(255,255,255,0.7)" 
         onChangeText = {
           (text) => {
@@ -17,7 +18,9 @@ export default class LoginScreen extends React.Component {
         }     
         />
 
-        <TextInput placeholder = "Senha" style={styles.textinputs}
+        <TextInput 
+        placeholder = "Senha" 
+        style={styles.textinputs}
         placeholderTextColor = "rgba(255,255,255,0.7)"
         secureTextEntry
         onChangeText = {
@@ -28,6 +31,7 @@ export default class LoginScreen extends React.Component {
         />
 
         <Button title="Clicar" onPress={this.props.onPress}/>
+
 
       </View>
     );

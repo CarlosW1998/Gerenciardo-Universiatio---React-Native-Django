@@ -27,9 +27,8 @@ export default class App extends React.Component {
         token: token
       });
       await AsyncStorage.setItem("@GerenciadorUniversitario:token", token);
-      //let token2 =  await AsyncStorage.getItem("@GerenciadorUniversitario:token");
-      //console.warn("token: " + typeof token);
-      //console.warn("Recuperando do storage:\n" + token2);
+      await AsyncStorage.setItem("@GerenciadorUniversitario:user", this.state.user);
+      await AsyncStorage.setItem("@GerenciadorUniversitario:pswd", this.state.pswd);
       this.setState({
         isLogged: true
       });
@@ -46,9 +45,6 @@ export default class App extends React.Component {
         password: this.state.pswd,
       });
       const {username} = response.data;
-      //console.warn(username);
-      //await AsyncStorage.setItem(["token", token]);
-      //console.warn("token: " + token);
     }catch (response){
       console.warn("Nome de usuário existente");
     }
@@ -78,13 +74,17 @@ export default class App extends React.Component {
     //   getUser={this.getUser} 
     //   getPassword = {this.getPassword}/>  
     // );
+
+    let user =  AsyncStorage.getItem("@GerenciadorUniversitario:user");
+    let pswd =  AsyncStorage.getItem("@GerenciadorUniversitario:pswd"); 
     
     if(!this.state.isLogged){
       return(
         <LoginScreen 
         onPress = {this.logIn} 
         getUser={this.getUser} 
-        getPassword = {this.getPassword}/>  
+        getPassword = {this.getPassword}
+        />  
       );
     }else{
       return (
