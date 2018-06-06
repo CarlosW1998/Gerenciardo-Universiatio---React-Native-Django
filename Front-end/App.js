@@ -26,8 +26,10 @@ export default class App extends React.Component {
       this.setState({
         token: token
       });
-      await AsyncStorage.setItem(["@GerenciadorUniversitario:token", token]);
-      console.warn("token: " + token);
+      await AsyncStorage.setItem("@GerenciadorUniversitario:token", token);
+      //let token2 =  await AsyncStorage.getItem("@GerenciadorUniversitario:token");
+      //console.warn("token: " + typeof token);
+      //console.warn("Recuperando do storage:\n" + token2);
       this.setState({
         isLogged: true
       });
@@ -44,7 +46,7 @@ export default class App extends React.Component {
         password: this.state.pswd,
       });
       const {username} = response.data;
-      console.warn(username);
+      //console.warn(username);
       //await AsyncStorage.setItem(["token", token]);
       //console.warn("token: " + token);
     }catch (response){
@@ -86,7 +88,7 @@ export default class App extends React.Component {
       );
     }else{
       return (
-        <MainScreen onPress={() => this.setState({isLogged : false})} token = {this.state.token}/>
+        <MainScreen/>
       );
     }
 
