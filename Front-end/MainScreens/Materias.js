@@ -19,51 +19,41 @@ export default class Materias extends React.Component {
 
     postMaterias = async () => {
       try{
-        const token =  await AsyncStorage.getItem("@GerenciadorUniversitario:token");
-        const response = await api.post('/materias/', 
+        let token =  await AsyncStorage.getItem("@GerenciadorUniversitario:token");
+        const auth = 'JWT ' + token;
+        console.warn(token);
+        const response = await api.post('/materias/',
+        { usuario: 0, 
+          nome: "eXtreme Programming",
+          ab1: 7.0,
+          ab2: 7.0,
+          reav: 0.0,
+          final: 0.0,
+          media: 7.0,
+          faltas: 2,
+          carga_horaria: 60,
+          max_faltas: 15,
+          conceito: "Aprovado",}, 
         
-        {
-          "usuario": null, 
-          "nome": "",
-          "ab1": null,
-          "ab2": null,
-          "reav": null,
-          "final": null,
-          "media": null,
-          "faltas": null,
-          "carga_horaria": null,
-          "max_faltas": null,
-          "conceito": "",
-          }, 
-        
-          {
-            headers:{'Authorization' : 'JWT ' + token }
-          });
+          { headers:{'Authorization' : auth } });
       }catch (response){
-        console.warn("Dados inválidos");
+        alert("Erro ao adicionar!");
       }
-    }
+     }
 
     
-    getMaterias = async () => {
-        try{
-          const response = await api.get('/materias/');
-          const {materias} = response.data;
-          console.warn(JSON.stringify(materias));
-          //await AsyncStorage.setItem(["token", token]);
-          //console.warn("token: " + token);
-          this.setState({
-            materias: materias
-          });
-        }catch (response){
-          console.warn("VISH");
-        }
+    async componentDidMount(){
+      try{
+        const response = await api.get('/materias/');
+        const materias = response.data;
+        alert(JSON.stringify(materias));
+        this.setState({
+          materias: materias
+        });
+      }catch (response){
+        alert("Erro");
+      }
     }
-    // deslog = async () =>{
-    //     await AsyncStorage.setItem("@GerenciadorUniversitario:user", '');
-    //     await AsyncStorage.setItem("@GerenciadorUniversitario:pswd", '');
-    // }
-    
 
 
     render(){
@@ -71,8 +61,6 @@ export default class Materias extends React.Component {
             <View>
             <Text>Aqui será a lista de matérias</Text>
 
-
-            <Button title="GET" onPress = {this.getMaterias}/>
             <Button title="POST" onPress = {this.postMaterias}/>           
 
             </View>

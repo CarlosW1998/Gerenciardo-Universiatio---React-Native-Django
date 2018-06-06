@@ -33,7 +33,7 @@ export default class App extends React.Component {
         isLogged: true
       });
     }catch (response){
-      console.warn("Dados inválidos");
+      alert("Dados inválidos, tente outra vez");
     }
   }
 
@@ -46,7 +46,7 @@ export default class App extends React.Component {
       });
       const {username} = response.data;
     }catch (response){
-      console.warn("Nome de usuário existente");
+      alert("Nome de usuário existente");
     }
 
     
@@ -63,9 +63,6 @@ export default class App extends React.Component {
       pswd: text
     });
   }
-
-
-
 
   render() {
     // return (
