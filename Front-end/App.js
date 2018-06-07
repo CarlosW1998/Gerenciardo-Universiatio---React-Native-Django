@@ -37,7 +37,6 @@ export default class App extends React.Component {
     }
   }
 
-
   signIn = async () => {
     try{
       const response = await api.post('/criarusuario/', {
@@ -48,8 +47,6 @@ export default class App extends React.Component {
     }catch (response){
       alert("Nome de usuário existente");
     }
-
-    
    };
 
    getUser = (text) =>{
@@ -65,12 +62,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    // return (
-    //   <LoginScreen 
-    //   onPress = {this.logIn} 
-    //   getUser={this.getUser} 
-    //   getPassword = {this.getPassword}/>  
-    // );
+     /*return (
+       <MainScreen/> 
+     );*/
 
     let user =  AsyncStorage.getItem("@GerenciadorUniversitario:user");
     let pswd =  AsyncStorage.getItem("@GerenciadorUniversitario:pswd"); 
@@ -78,7 +72,8 @@ export default class App extends React.Component {
     if(!this.state.isLogged){
       return(
         <LoginScreen 
-        onPress = {this.logIn} 
+        logIn = {this.logIn} 
+        signIn = {this.signIn}
         getUser={this.getUser} 
         getPassword = {this.getPassword}
         />  
@@ -88,7 +83,5 @@ export default class App extends React.Component {
         <MainScreen/>
       );
     }
-
-
   }
 }
