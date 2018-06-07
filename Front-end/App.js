@@ -29,6 +29,7 @@ export default class App extends React.Component {
       await AsyncStorage.setItem("@GerenciadorUniversitario:token", token);
       await AsyncStorage.setItem("@GerenciadorUniversitario:user", this.state.user);
       await AsyncStorage.setItem("@GerenciadorUniversitario:pswd", this.state.pswd);
+      
       this.setState({
         isLogged: true
       });
@@ -44,6 +45,7 @@ export default class App extends React.Component {
         password: this.state.pswd,
       });
       const {username} = response.data;
+      alert("Cadastrado com sucesso!");
     }catch (response){
       alert("Nome de usuário existente");
     }

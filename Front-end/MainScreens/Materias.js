@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Button, FlatList, AsyncStorage } from 'react-native';
 import api from '../Networking/Api';
+import { List, ListItem } from 'react-native-elements';
 
 
 export default class Materias extends React.Component {

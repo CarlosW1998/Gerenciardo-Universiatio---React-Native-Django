@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, Button, FlatList, AsyncStorage, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, AsyncStorage, StyleSheet, TouchableHighlight } from 'react-native';
 import api from '../Networking/Api';
+import { List, ListItem } from 'react-native-elements';
+import AddMateria from './AddMateria';
 
 
 export default class MainScreen extends React.Component {
@@ -33,6 +35,7 @@ export default class MainScreen extends React.Component {
         
         { headers:{'Authorization' : auth } });
         alert("Matéria Adicionada!");
+        this.getAllMaterias();
       }catch (response){
         alert("Erro ao adicionar!");
       }
@@ -40,6 +43,13 @@ export default class MainScreen extends React.Component {
 
     
     async componentDidMount(){
+      this.getAllMaterias();
+    }
+
+    shouldComponentUpdate(){return true;}
+    componentDidUpdate(){}
+
+    getAllMaterias = async () => {
       try{
         const response = await api.get('/materias/');
         const materias = response.data;
@@ -47,7 +57,7 @@ export default class MainScreen extends React.Component {
         this.setState({
           materias: materias
         });
-        alert(JSON.stringify(this.state.materias));
+       // alert(JSON.stringify('pegando todas!'));
       }catch (response){
         alert("Erro");
       }
@@ -105,25 +115,78 @@ export default class MainScreen extends React.Component {
         
           { headers:{'Authorization' : auth } });
         alert("Materia atualizada!");
+        //this.getAllMaterias();
       }catch (response){
         alert("Erro ao adicionar!");
       }
      }
-
-
-    render(){
-        return (
-            <View style={styles.container}>
-            <View style={styles.listCont}>
-            <Text>Aqui será a lista de matérias</Text>
-            <Button title="POST" onPress = {this.updateMateria}/>   
-            </View>
-
+//<Button title="POST" onPress = {this.updateMateria}/>  
+/*
             <Button 
             title="Adicionar Matéria" 
             color="#012B74"
             onPress = {this.postMaterias}
             />  
+*/
+
+
+
+     renderHeader = () => {
+       return (
+        <View style={{marginTop:25, flexDirection: 'row', alignItems:'center'}}>
+        <Text>SUA LISTA DE MATÉRIAS</Text>
+        <View style={{width: 70}}/>
+        <Button 
+        title = '+' 
+        onPress = {this.postMaterias}
+        color="#012B74"
+        />
+      </View>
+
+       );
+     }
+
+     teste = (nome) => {
+       alert("Vc clicou em: " + nome);
+     }
+     renderSeparator = () => {
+       return(
+        <View style={{ height: 1, backgroundColor: '#012B74'}}/>
+       );
+     }
+
+    render(){
+        return (
+            <View style={styles.container}>
+
+              <View style={{marginTop:28, flexDirection: 'row', alignItems:'center'}}>
+              <Text>SUA LISTA DE MATÉRIAS</Text>
+              <View style={{width: 70}}/>
+              <Button 
+              title = '+' 
+              onPress = {this.postMaterias}
+              color="#012B74"
+              />
+            </View>
+
+            <View>
+            <List>
+              <FlatList
+              data = {this.state.materias}
+              renderItem = {({ item }) =>(
+                <ListItem
+                title={`${item.nome}`}
+                />
+              )}
+              keyExtractor = {(item) => `${item.id}`}
+              //ListHeaderComponent = {this.renderHeader}
+              //ItemSeparatorComponent = {this.renderSeparator}
+              />
+            
+            </List>
+            </View>
+              
+              <AddMateria/>
 
             </View>
         );
