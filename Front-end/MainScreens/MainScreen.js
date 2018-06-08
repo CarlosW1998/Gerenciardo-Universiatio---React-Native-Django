@@ -25,6 +25,10 @@ export default class MainScreen extends React.Component {
         }
     }
 
+    static navigationOptions = {
+      title: 'SUA LISTA DE MATÉRIAS',
+    };
+
     postMaterias = async (nome, carga) => {
       if(nome === '' || nome === ' ' || carga <= 0 || carga==='' || Number.parseInt(carga) === 0){
         alert("Dados Inválidos!");
@@ -64,17 +68,6 @@ export default class MainScreen extends React.Component {
     }
 
 
-    getMateria = async (id) =>{
-      try{
-        const url = '/materias/'+id; 
-        const response = await api.get(url);
-        const materia = response.data;
-        alert("Teste de retorno de uma materia especifica:\n" + JSON.stringify(materia));
-      }catch (response){
-        alert("Erro no GET");
-      }
-    }
-
     renderFooter = () =>{
       if(!this.state.isLoading)
         return null;
@@ -90,13 +83,17 @@ export default class MainScreen extends React.Component {
 
     renderTopo = () =>{
       return (
-        <View style={{marginTop:28, flexDirection: 'row', alignItems:'center', justifyContent: 'center',
+        <View style={{marginTop:0, flexDirection: 'row', alignItems:'center', justifyContent: 'center',
         backgroundColor: "#012B74"}}>
-          <Text style={styles.title}>SUA LISTA DE MATÉRIAS</Text>
           <TouchableOpacity 
-          style={[styles.button, {backgroundColor: '#0E37E8', marginRight: 20}]}
+          style={[styles.button, {backgroundColor: '#0E37E8', marginRight:5}]}
           onPress = {() => {this.setState({ modalVisible: true})}}>
-          <Text style={styles.buttonText}>+</Text>
+          <Text style={[styles.buttonText, {fontSize: 50}]}>+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+          style={[styles.button, {backgroundColor: '#0E37E8', marginLeft: 5}]}
+          onPress = {() => {this.props.deslog()}}>
+          <Text style={styles.buttonText}>LogOut</Text>
           </TouchableOpacity>
         </View>
       );
@@ -179,8 +176,7 @@ export default class MainScreen extends React.Component {
               renderItem = {({ item }) =>(
                 <TouchableHighlight 
                 onLongPress={() => {this.setState({ deleteVisible: true, longSelect: item.id, dNome:item.nome})}}
-                onPress = {() => this.teste(item.id)}
-                
+                onPress = {() => this.props.navigation.navigate('Situ', {id: item.id})}
                 >
                 <ListItem
                 title={`${item.nome}`}
@@ -233,22 +229,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 
-  title:{
-    color: '#FFF',
-    marginTop: 10,
-    width: 300,
-    textAlign: 'center',
-    opacity: 0.9,
-    fontWeight: 'bold',
-    fontSize: 22,
-  },
-
   button:{
-      flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 3,
-      width: 60,
+      height: 60,
+      width: 100,
+
   },
 
   buttonText:{

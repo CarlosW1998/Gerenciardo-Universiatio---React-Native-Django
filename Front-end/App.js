@@ -1,8 +1,9 @@
 import React from 'react';
-import { AsyncStorage, View } from 'react-native';
+import { AsyncStorage, View, Navigator } from 'react-native';
 import api from './Networking/Api';
 import LoginScreen from './LoginScreen/LoginScreen';
 import MainScreen from './MainScreens/MainScreen';
+import StackNavigator from './MainScreens/StackNavigator';
 
 export default class App extends React.Component {
 
@@ -10,7 +11,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       isLogged: false,
-      user: '',
+      user: null,
       pswd: '',
       token: '',
       
@@ -29,7 +30,6 @@ export default class App extends React.Component {
       });
       await AsyncStorage.setItem("@GerenciadorUniversitario:token", token);
       await AsyncStorage.setItem("@GerenciadorUniversitario:user", this.state.user);
-      await AsyncStorage.setItem("@GerenciadorUniversitario:pswd", this.state.pswd);
       
       this.setState({
         isLogged: true
@@ -40,15 +40,19 @@ export default class App extends React.Component {
   }
 
   signIn = async () => {
-    try{
-      const response = await api.post('/criarusuario/', {
-        username: this.state.user,
-        password: this.state.pswd,
-      });
-      const {username} = response.data;
-      alert("Cadastrado com sucesso!");
-    }catch (response){
-      alert("Nome de usuário existente");
+    if(this.state.user === null|| this.state.pswd==null)
+      alert("Digite algo");
+    else{
+      try{
+        const response = await api.post('/criarusuario/', {
+          username: this.state.user,
+          password: this.state.pswd,
+        });
+        const {username} = response.data;
+        alert("Cadastrado com sucesso!");
+      }catch (response){
+        alert("Nome de usuário existente");
+      }
     }
    };
 
@@ -64,10 +68,17 @@ export default class App extends React.Component {
     });
   }
 
+  deslog = async () =>{
+    this.setState({ isLogged: false});
+    await AsyncStorage.removeItem("@GerenciadorUniversitario:user");
+  }
+
+   
+  
+
   render() {
     let user =  AsyncStorage.getItem("@GerenciadorUniversitario:user");
-    let pswd =  AsyncStorage.getItem("@GerenciadorUniversitario:pswd"); 
-    
+        
     if(!this.state.isLogged){
       return(
         <LoginScreen 
@@ -79,8 +90,10 @@ export default class App extends React.Component {
       );
     }else{
       return (
-        <MainScreen/>
+        <StackNavigator deslog={this.deslog}/>
+        //<MainScreen deslog={this.deslog}/>
       );
     }
   }
 }
+
