@@ -1,64 +1,73 @@
 import React, {Component} from 'react';
-import {View, Text, Modal, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, Modal, TextInput, StyleSheet, TouchableOpacity, Button} from 'react-native';
 
 export default class Addmateria extends React.Component{
 
-    // construtor(props){
-    //     super(props);
-    // }
+    constructor(props){
+         super(props);
+         this.state = {
+            nomeMat: '',
+            cargaH: 0,
+         };
+     }
 
-    /*postMaterias = async () => {
-        try{
-          let token =  await AsyncStorage.getItem("@GerenciadorUniversitario:token");
-          const auth = 'JWT ' + token;
-          const response = await api.post('/materias/',
-          { usuario: 1, 
-            nome: "eXtreme Programming",
-            ab1: 0.0,
-            ab2: 0.0,
-            reav: 0.0,
-            final: 0.0,
-            media: 0.0,
-            faltas: 0,
-            carga_horaria: 0,
-            max_faltas: 0,
-            conceito: "Matriculado",}, 
-          
-          { headers:{'Authorization' : auth } });
-          alert("Matéria Adicionada!");
-          this.getAllMaterias();
-        }catch (response){
-          alert("Erro ao adicionar!");
-        }
-    }*/
-
-
-
-    render (){
+    render(){
         return (
             <Modal 
             animationType='fade'
             transparent={true}
-            visible={true}
-            style={styles.container}
+            visible={this.props.visible}
+            onRequestClose = {() => {}}
             >
             
-            <View style={styles.boxCont}> 
-                <View>
-                    <Text>ADICIONAR MATÉRIA</Text>
-                    <TextInput placeholder="Nome da matéria"/>
-                    <TextInput placeholder="Carga Horária"/>
-                </View>
-                <View>
-                <TouchableOpacity onPress={() => {}}>
-                    <Text>Cancelar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {}}>
-                    <Text>Adicionar</Text>
-                </TouchableOpacity>
+            <View style={styles.container}> 
+                <View style={styles.boxCont}>
+                    <Text style={styles.title}>ADICIONAR MATÉRIA</Text>
+
+                    <TextInput 
+                    autofocus
+                    placeholder="Nome da matéria"
+                    style={styles.textinputs}
+                    onChangeText = {
+                        (text) => {
+                          this.setState({
+                            nomeMat: text,
+                          });
+                        } 
+                      } 
+                    />
+
+                    <TextInput 
+                    autoFocus
+                    placeholder="Carga Horária"
+                    keyboardType='numeric'
+                    style={styles.textinputs}
+                    onChangeText = {
+                        (text) => {
+                          this.setState({
+                            cargaH: text,
+                          });
+                        } 
+                      } 
+                    />
+
+                    <View style={styles.buttonCont}>
+                        <TouchableOpacity 
+                        style={[styles.button, {backgroundColor: '#E25F5F', marginRight: 5}]}
+                        onPress={this.props.onCancel}>
+                            <Text style={styles.buttonText}>Cancelar</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                        style={[styles.button, {backgroundColor: '#70BD85', marginLeft: 5}]}
+                        onPress={() => this.props.add(this.state.nomeMat, this.state.cargaH)}
+                        >
+                            <Text style={styles.buttonText}>Adicionar</Text>
+                        </TouchableOpacity>
+
+                        </View>
                 </View>
             </View>
-            
             </Modal>   
         );
     }
@@ -75,8 +84,9 @@ const styles = StyleSheet.create({
     boxCont:{
         padding : 20,
         backgroundColor: '#FFF',
+        borderRadius: 10,
         alignItems: 'center',   
-        justifyContent: 'center',
+        width: 300,
     },
   
     textinputs :{
@@ -87,10 +97,38 @@ const styles = StyleSheet.create({
     },
   
     title:{
-      color: '#FFF',
-      marginTop: 10,
-      width: 300,
-      textAlign: 'center',
-      opacity: 0.9,
+      fontWeight: 'bold',
+      fontSize: 16,
     },
+
+    inputs: {
+        alignSelf: 'stretch',
+        marginTop: 10,
+        paddingVertical: 0,
+        paddingHorizontal: 20,
+        borderWidth: 1,
+        borderColor: '#DDD',
+        height: 40,
+        borderRadius: 3, 
+    },
+
+    buttonCont: {
+        marginTop: 10,
+        height: 40,
+        flexDirection: 'row',
+    },
+
+    button:{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 3,
+    },
+
+    buttonText:{
+        fontWeight: 'bold',
+        color: '#FFF',
+        fontSize: 12,
+    }
+
   });

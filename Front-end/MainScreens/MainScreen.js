@@ -12,67 +12,56 @@ export default class MainScreen extends React.Component {
         this.state = {
             token : this.props.token,
             materias: [],
-            msg: 'Ainda não há matérias cadastradas, para adicionar clique no botão + acima'
+            msg: 'Ainda não há matérias cadastradas, para adicionar clique no botão + acima',
+            modalVisible: false,
+            update: true,
         }
     }
 
-    postMaterias = async () => {
-      try{
-        let token =  await AsyncStorage.getItem("@GerenciadorUniversitario:token");
-        const auth = 'JWT ' + token;
-        const response = await api.post('/materias/',
-        { usuario: 1, 
-          nome: "eXtreme Programming",
-          ab1: 0.0,
-          ab2: 0.0,
-          reav: 0.0,
-          final: 0.0,
-          media: 0.0,
-          faltas: 0,
-          carga_horaria: 0,
-          max_faltas: 0,
-          conceito: "Matriculado",}, 
-        
-        { headers:{'Authorization' : auth } });
-        alert("Matéria Adicionada!");
-        this.getAllMaterias();
-      }catch (response){
-        alert("Erro ao adicionar!");
+    postMaterias = async (nome, carga) => {
+      if(nome === '' || nome === ' ' || carga <= 0 || carga==='' || Number.parseInt(carga) === 0){
+        alert("Dados Inválidos!");
+      }else{
+        try{
+          let token =  await AsyncStorage.getItem("@GerenciadorUniversitario:token");
+          const auth = 'JWT ' + token;
+          const response = await api.post('/materias/',
+          { usuario: 1, nome: nome,  ab1: 0.0,  ab2: 0.0,   reav: 0.0,
+            final: 0.0,  media: 0.0,  faltas: 0,  carga_horaria: Number.parseInt(carga),
+            max_faltas: Number.parseInt(carga*0.25),  conceito: "Matriculado",}, 
+          
+          { headers:{'Authorization' : auth } });
+          alert("Matéria Adicionada!");
+          this.getAllMaterias();
+        }catch (response){
+          alert("Erro ao adicionar!");
+        }
       }
      }
-
-    
-    async componentDidMount(){
+  
+    componentDidMount(){
       this.getAllMaterias();
     }
 
-    shouldComponentUpdate(){return true;}
-    componentDidUpdate(){}
+    //shouldComponentUpdate(){return true;}
+    //componentDidUpdate(){}
 
     getAllMaterias = async () => {
       try{
         const response = await api.get('/materias/');
-        const materias = response.data;
-        
-        this.setState({
-          materias: materias
-        });
-       // alert(JSON.stringify('pegando todas!'));
+        const materias = response.data;      
+        this.setState({ materias: materias, modalVisible: false });
       }catch (response){
-        alert("Erro");
+        alert("Erro!");
       }
     }
 
 
     getMateria = async (id) =>{
       try{
-        //console.warn("1");
         const url = '/materias/'+id; 
-        //console.warn("2");
         const response = await api.get(url);
-        //console.warn("3");
         const materia = response.data;
-        //console.warn("4");
         alert("Teste de retorno de uma materia especifica:\n" + JSON.stringify(materia));
       }catch (response){
         alert("Erro no GET");
@@ -115,44 +104,14 @@ export default class MainScreen extends React.Component {
         
           { headers:{'Authorization' : auth } });
         alert("Materia atualizada!");
-        //this.getAllMaterias();
+
       }catch (response){
         alert("Erro ao adicionar!");
       }
      }
-//<Button title="POST" onPress = {this.updateMateria}/>  
-/*
-            <Button 
-            title="Adicionar Matéria" 
-            color="#012B74"
-            onPress = {this.postMaterias}
-            />  
-*/
-
-
-
-     renderHeader = () => {
-       return (
-        <View style={{marginTop:25, flexDirection: 'row', alignItems:'center'}}>
-        <Text>SUA LISTA DE MATÉRIAS</Text>
-        <View style={{width: 70}}/>
-        <Button 
-        title = '+' 
-        onPress = {this.postMaterias}
-        color="#012B74"
-        />
-      </View>
-
-       );
-     }
 
      teste = (nome) => {
        alert("Vc clicou em: " + nome);
-     }
-     renderSeparator = () => {
-       return(
-        <View style={{ height: 1, backgroundColor: '#012B74'}}/>
-       );
      }
 
     render(){
@@ -164,7 +123,7 @@ export default class MainScreen extends React.Component {
               <View style={{width: 70}}/>
               <Button 
               title = '+' 
-              onPress = {this.postMaterias}
+              onPress = {() => {this.setState({ modalVisible: true})}}
               color="#012B74"
               />
             </View>
@@ -179,14 +138,16 @@ export default class MainScreen extends React.Component {
                 />
               )}
               keyExtractor = {(item) => `${item.id}`}
-              //ListHeaderComponent = {this.renderHeader}
-              //ItemSeparatorComponent = {this.renderSeparator}
               />
             
             </List>
             </View>
               
-              <AddMateria/>
+              <AddMateria 
+              visible = {this.state.modalVisible}
+              onCancel = {() => {this.setState({ modalVisible: false})}}
+              add = {this.postMaterias}
+              />
 
             </View>
         );

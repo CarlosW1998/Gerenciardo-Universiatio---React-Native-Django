@@ -13,6 +13,7 @@ export default class App extends React.Component {
       user: '',
       pswd: '',
       token: '',
+      
     }
   }
 
@@ -64,10 +65,6 @@ export default class App extends React.Component {
   }
 
   render() {
-     /*return (
-       <MainScreen/> 
-     );*/
-
     let user =  AsyncStorage.getItem("@GerenciadorUniversitario:user");
     let pswd =  AsyncStorage.getItem("@GerenciadorUniversitario:pswd"); 
     
