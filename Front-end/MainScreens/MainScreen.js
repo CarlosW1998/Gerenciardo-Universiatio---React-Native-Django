@@ -1,8 +1,12 @@
 import React from 'react';
-import { View, Text, Button, FlatList, AsyncStorage, StyleSheet, TouchableHighlight } from 'react-native';
+import { 
+  View, Text, Button, FlatList, AsyncStorage, StyleSheet, 
+  TouchableHighlight, ActivityIndicator, TouchableOpacity
+} from 'react-native';
 import api from '../Networking/Api';
 import { List, ListItem } from 'react-native-elements';
 import AddMateria from './AddMateria';
+import DeleteMat from './DeleteMat';
 
 
 export default class MainScreen extends React.Component {
@@ -12,9 +16,12 @@ export default class MainScreen extends React.Component {
         this.state = {
             token : this.props.token,
             materias: [],
-            msg: 'Ainda não há matérias cadastradas, para adicionar clique no botão + acima',
+            msg: 'Ainda não há matérias cadastradas, para adicionar clique no botão + acima para começar',
             modalVisible: false,
-            update: true,
+            deleteVisible: false,
+            longSelect: null,
+            dNome: null,
+            isLoading: true,
         }
     }
 
@@ -50,7 +57,7 @@ export default class MainScreen extends React.Component {
       try{
         const response = await api.get('/materias/');
         const materias = response.data;      
-        this.setState({ materias: materias, modalVisible: false });
+        this.setState({ materias: materias, modalVisible: false, isLoading:false });
       }catch (response){
         alert("Erro!");
       }
@@ -68,16 +75,43 @@ export default class MainScreen extends React.Component {
       }
     }
 
+    renderFooter = () =>{
+      if(!this.state.isLoading)
+        return null;
+      return (
+        <View style={{paddingVertical: 20, borderTopWidth: 1, borderTopColor: '#CED0CD', backgroundColor: '#3498db',}}>
+        <ActivityIndicator 
+        animating 
+        size = 'large'
+        color='#000000'
+        /></View>
+      );
+    }
+
+    renderTopo = () =>{
+      return (
+        <View style={{marginTop:28, flexDirection: 'row', alignItems:'center', justifyContent: 'center',
+        backgroundColor: "#012B74"}}>
+          <Text style={styles.title}>SUA LISTA DE MATÉRIAS</Text>
+          <TouchableOpacity 
+          style={[styles.button, {backgroundColor: '#0E37E8', marginRight: 20}]}
+          onPress = {() => {this.setState({ modalVisible: true})}}>
+          <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    
+
     deleteMateria = async (id) => {
       try{
-        alert(this.getMateria(15));
         let token =  await AsyncStorage.getItem("@GerenciadorUniversitario:token");
         const auth = 'JWT ' + token;
-        console.warn(token);
         const response = await api.delete('/materias/'+id,      
         { headers:{'Authorization' : auth } });
-        alert(this.getMateria(15));
-
+        alert("Matéria excluída!");
+        this.setState({ deleteVisible: false });
+        this.getAllMaterias();
       }catch (response){
         alert("Erro ao deletar!");
       }
@@ -115,29 +149,46 @@ export default class MainScreen extends React.Component {
      }
 
     render(){
-        return (
+        if(this.state.materias.length === 0 && !this.state.isLoading){
+          return(
             <View style={styles.container}>
+              {this.renderTopo()}
+              <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+                <Text style={{ fontWeight: 'bold', fontSize: 25, textAlign: 'center',}}>
+                {`${this.state.msg}`}</Text>
+              </View>
 
-              <View style={{marginTop:28, flexDirection: 'row', alignItems:'center'}}>
-              <Text>SUA LISTA DE MATÉRIAS</Text>
-              <View style={{width: 70}}/>
-              <Button 
-              title = '+' 
-              onPress = {() => {this.setState({ modalVisible: true})}}
-              color="#012B74"
+              <AddMateria 
+              visible = {this.state.modalVisible}
+              onCancel = {() => {this.setState({ modalVisible: false})}}
+              add = {this.postMaterias}
               />
+
             </View>
 
+          );
+        }
+
+        return (
+            <View style={styles.container}>
+            {this.renderTopo()}
             <View>
             <List>
               <FlatList
               data = {this.state.materias}
               renderItem = {({ item }) =>(
+                <TouchableHighlight 
+                onLongPress={() => {this.setState({ deleteVisible: true, longSelect: item.id, dNome:item.nome})}}
+                onPress = {() => this.teste(item.id)}
+                
+                >
                 <ListItem
                 title={`${item.nome}`}
                 />
+                </TouchableHighlight>
               )}
               keyExtractor = {(item) => `${item.id}`}
+              ListFooterComponent= {this.renderFooter}
               />
             
             </List>
@@ -147,6 +198,14 @@ export default class MainScreen extends React.Component {
               visible = {this.state.modalVisible}
               onCancel = {() => {this.setState({ modalVisible: false})}}
               add = {this.postMaterias}
+              />
+
+              <DeleteMat
+              visible = {this.state.deleteVisible}
+              onCancel = {() => {this.setState({ deleteVisible: false})}}
+              delete = {this.deleteMateria}
+              id = {this.state.longSelect}
+              dNome = {this.state.dNome}
               />
 
             </View>
@@ -180,5 +239,21 @@ const styles = StyleSheet.create({
     width: 300,
     textAlign: 'center',
     opacity: 0.9,
+    fontWeight: 'bold',
+    fontSize: 22,
+  },
+
+  button:{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 3,
+      width: 60,
+  },
+
+  buttonText:{
+      fontWeight: 'bold',
+      color: '#FFF',
+      fontSize: 20,
   },
 });
