@@ -92,11 +92,17 @@ export default class MainScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity 
           style={[styles.button, {backgroundColor: '#0E37E8', marginLeft: 5}]}
-          onPress = {() => {this.props.deslog()}}>
+          onPress = {() => {}}>
           <Text style={styles.buttonText}>LogOut</Text>
           </TouchableOpacity>
         </View>
       );
+    }
+
+    deslog = async () =>{
+      //this.setState({ isLogged: false});
+      //await AsyncStorage.removeItem("@GerenciadorUniversitario:user");
+      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", '0');
     }
     
 
@@ -202,6 +208,8 @@ export default class MainScreen extends React.Component {
               delete = {this.deleteMateria}
               id = {this.state.longSelect}
               dNome = {this.state.dNome}
+              txt = {'DESEJA DELETAR ESSA MATÉRIA?'}
+              greenButton = 'Deletar'
               />
 
             </View>

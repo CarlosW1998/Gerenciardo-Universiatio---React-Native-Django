@@ -8,7 +8,7 @@ import SituMat from './SituMat';
 
 export default class StackNavigator extends React.Component{
     render(){
-        return <RootStack deslog={this.deslog}/>
+        return <RootStack deslog={this.props.deslog}/>
     }
 }
 

@@ -30,6 +30,7 @@ export default class App extends React.Component {
       });
       await AsyncStorage.setItem("@GerenciadorUniversitario:token", token);
       await AsyncStorage.setItem("@GerenciadorUniversitario:user", this.state.user);
+      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", '1');
       
       this.setState({
         isLogged: true
@@ -70,16 +71,20 @@ export default class App extends React.Component {
 
   deslog = async () =>{
     this.setState({ isLogged: false});
-    await AsyncStorage.removeItem("@GerenciadorUniversitario:user");
+    //await AsyncStorage.removeItem("@GerenciadorUniversitario:user");
+    await AsyncStorage.setItem("@GerenciadorUniversitario:logged", '0');
   }
 
-   
+   stillLogged = async () => {
+    let l =  await AsyncStorage.getItem("@GerenciadorUniversitario:logged");
+    // console.warn(l);
+   }
   
 
   render() {
     let user =  AsyncStorage.getItem("@GerenciadorUniversitario:user");
-        
-    if(!this.state.isLogged){
+   
+    if(!this.state.isLogged || !this.stillLogged()){
       return(
         <LoginScreen 
         logIn = {this.logIn} 

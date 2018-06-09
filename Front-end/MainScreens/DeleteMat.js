@@ -21,7 +21,7 @@ export default class DeleteMat extends React.Component{
             
             <View style={styles.container}> 
                 <View style={styles.boxCont}>
-                    <Text style={styles.title}>{'DESEJA DELETAR ESSA MATÉRIA?'}</Text>
+                    <Text style={styles.title}>{this.props.txt}</Text>
                     <Text>{`Você clicou em: ${this.props.dNome}`}</Text>
 
                     <View style={styles.buttonCont}>
@@ -34,7 +34,7 @@ export default class DeleteMat extends React.Component{
                         <TouchableOpacity 
                         style={[styles.button, {backgroundColor: '#70BD85', marginLeft: 5}]}
                         onPress={() => this.props.delete(this.props.id)}>
-                            <Text style={styles.buttonText}>Deletar</Text>
+                            <Text style={styles.buttonText}>{this.props.greenButton}</Text>
                         </TouchableOpacity>
 
                         </View>
