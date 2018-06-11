@@ -120,34 +120,7 @@ export default class MainScreen extends React.Component {
       }
      }
 
-     updateMateria = async () => {
-      try{
-        let token =  await AsyncStorage.getItem("@GerenciadorUniversitario:token");
-        const auth = 'JWT ' + token;
-        console.warn(token);
-        const response = await api.put('/materias/17',
-        { id: 17,
-          usuario: 13, 
-          nome: "testando",
-          ab1: 7.3,
-          ab2: 0.0,
-          reav: 0.0,
-          final: 0.0,
-          media: 0.0,
-          faltas: 0,
-          carga_horaria: 0,
-          max_faltas: 0,
-          conceito: "Matriculado",}, 
-        
-          { headers:{'Authorization' : auth } });
-        alert("Materia atualizada!");
-
-      }catch (response){
-        alert("Erro ao adicionar!");
-      }
-     }
-
-     teste = (nome) => {
+    teste = (nome) => {
        alert("Vc clicou em: " + nome);
      }
 

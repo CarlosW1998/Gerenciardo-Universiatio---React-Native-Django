@@ -13,11 +13,18 @@ export default class SituMat extends React.Component {
         nome: 'Carregando',
         notas: false,
         faltas: false,
+        nvlFaltas: 'Aceitável',
         id: null,
         materia: {},
         av: null,
         inputNota: null,
         isLoading: true,
+        enum: {
+          'ab1': 1,
+          'ab2': 2,
+          'reav': 3,
+          'final': 4
+        }
     }
   }
 
@@ -67,27 +74,80 @@ export default class SituMat extends React.Component {
        m.faltas = Number.parseInt(f + 1);
        this.setState({
             materia: m ,
-            faltas: false
+            faltas: false,
+            nvlFaltas: this.nvlFaltas(m),
        });
        this.updateMateria(this.state.materia);
    }
 
    setNota = (nota, tipo) => {
-    m = this.state.materia;
-    m[tipo] = Number.parseFloat(nota);
-    this.setState({
-         materia: m ,
-         notas: false
-    });
-    this.updateMateria(this.state.materia);
-  }
+    if(nota > 10 || nota < 0)
+      alert("Notas entre 0 e 10 apenas!")
+    else{
+      m = this.state.materia;
+      m[tipo] = Number.parseFloat(nota);
+      m.media = this.calcMedia(m, this.state.enum[tipo]);
+      m.conceito = this.conceito(m.media, this.state.enum[tipo])
+      //console.warn(m.media + "  "+ tipo+": " + m[tipo])
+      this.setState({
+          materia: m ,
+          notas: false
+      });
+      //this.updateMateria(this.state.materia);
+  }}
 
-  calcMedia = () => {
-    media = Number.parseFloat((this.state.materia.ab1 + this.state.materia.ab2)/2)
+  calcMedia = (m, tipo) => {
+    ab1 = Number.parseFloat(m.ab1)
+    ab2 = Number.parseFloat(m.ab2)
+    r = Number.parseFloat(m.reav)
+    f = Number.parseFloat(m.final)
+    media = Number.parseFloat( (ab1 + ab2) /2)
+
+    if (tipo >= 3)
+      if(ab1 < ab2 && ab2 < r)
+        media = Number.parseFloat ((r + ab2) /2)
+
+      if(ab2 < ab1 && ab2 < r)
+        media = Number.parseFloat((ab1 + r)/2)
+
+    if(tipo === 4)
+      media = Number.parseFloat( ((0.6*media) + (0.4*f))/2 )
 
     return media;
   }
-  
+
+  conceito = (media, tipo) => {
+    if (media >= 7)
+      return "Aprovado"
+
+    if(media < 5 && tipo >= 2)
+      return "Reprovado"
+
+    if (media >= 5.5 && tipo === 4)
+      return "Aprovado"
+
+    if(media <= 5.5 && tipo === 4)
+      return "Reprovado"
+
+    if(this.state.nvlFaltas === "Limite Ultrapassado")
+      return "Reprovado por Falta!"
+
+    return "Matriculado"
+          
+  }
+
+  nvlFaltas = (m) => {
+    nvl = Number.parseFloat(m.faltas/m.max_faltas)
+    if(nvl < 0.5)
+      return "Aceitável"
+    else if (nvl >=  0.5 && nvl < 0.8)
+      return "Perigoso"
+    else if (nvl >= 0.8 && nvl <=1)
+      return "Crítico!"
+    else
+      return "Limite Ultrapassado"
+  }
+
   render() {
     if(this.state.isLoading)
     return (
@@ -104,7 +164,15 @@ export default class SituMat extends React.Component {
         <View >
             <Text style={{ fontWeight: 'bold', fontSize: 25, textAlign: 'center',}}>
             {`${this.state.materia.nome}\n${this.state.materia.faltas}\n${this.state.materia.ab1}
-            \n${this.state.materia.ab2}\n${this.state.materia.reav}\n${this.state.materia.final}\n\n\n`}</Text></View>
+            \n${this.state.materia.ab2}\n${this.state.materia.reav}\n${this.state.materia.final}\n\n\n`}</Text>
+            
+            
+        <Text></Text>
+
+        <Text>{`\n\nMÉDIA: ${this.state.materia.media}`}</Text> 
+        <Text>{`\n\nCONCEITO: ${this.state.materia.conceito}`}</Text>    
+        <Text>{`\n\nNível de Faltas: ${this.state.nvlFaltas}`}</Text>  
+      </View>
 
         <TouchableOpacity
         onPress={() => {this.setState({ faltas: true})}}>
