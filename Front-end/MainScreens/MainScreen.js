@@ -83,18 +83,21 @@ export default class MainScreen extends React.Component {
 
     renderTopo = () =>{
       return (
-        <View style={{marginTop:0, flexDirection: 'row', alignItems:'center', justifyContent: 'center',
+        <View style={{marginTop:0, flexDirection: 'row', alignItems:'center', justifyContent: 'space-between',
         backgroundColor: "#012B74"}}>
+
           <TouchableOpacity 
-          style={[styles.button, {backgroundColor: '#0E37E8', marginRight:5}]}
-          onPress = {() => {this.setState({ modalVisible: true})}}>
-          <Text style={[styles.buttonText, {fontSize: 50}]}>+</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={[styles.button, {backgroundColor: '#0E37E8', marginLeft: 5}]}
+          style={[styles.button, {marginRight: 5}]}
           onPress = {() => {}}>
           <Text style={styles.buttonText}>LogOut</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity 
+          style={[styles.button, {marginLeft:5}]}
+          onPress = {() => {this.setState({ modalVisible: true})}}>
+          <Text style={[styles.buttonText, {fontSize: 50}]}>+</Text>
+          </TouchableOpacity>
+
         </View>
       );
     }

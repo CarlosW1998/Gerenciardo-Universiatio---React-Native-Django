@@ -39,13 +39,13 @@ export default class LoginScreen extends React.Component {
           <View style={{flexDirection: 'row', height: 35}}>
           <Button 
           title="Login" 
-          onPress={this.props.logIn} 
+          onPress={() => {this.props.logIn()}} 
           color="#012B74"
           />
           <View style={{width: 50, height: 50}}/>
           <Button 
           title="Cadastrar" 
-          onPress={this.props.signIn} 
+          onPress={() => {this.props.signIn()}} 
           color="#012B74"
           />
           </View>

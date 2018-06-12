@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { AsyncStorage, View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import api from '../Networking/Api';
 import MainScreen from './MainScreen';
 import DeleteMat from './DeleteMat';
@@ -93,7 +93,7 @@ export default class SituMat extends React.Component {
           materia: m ,
           notas: false
       });
-      //this.updateMateria(this.state.materia);
+      this.updateMateria(this.state.materia);
   }}
 
   calcMedia = (m, tipo) => {
@@ -103,16 +103,17 @@ export default class SituMat extends React.Component {
     f = Number.parseFloat(m.final)
     media = Number.parseFloat( (ab1 + ab2) /2)
 
-    if (tipo >= 3)
+    if (tipo >= 3){
       if(ab1 < ab2 && ab2 < r)
         media = Number.parseFloat ((r + ab2) /2)
 
       if(ab2 < ab1 && ab2 < r)
         media = Number.parseFloat((ab1 + r)/2)
+    }
 
     if(tipo === 4)
-      media = Number.parseFloat( ((0.6*media) + (0.4*f))/2 )
-
+      media = Number.parseFloat( ((0.6*media) + (0.4*f)) )
+    
     return media;
   }
 
@@ -120,7 +121,7 @@ export default class SituMat extends React.Component {
     if (media >= 7)
       return "Aprovado"
 
-    if(media < 5 && tipo >= 2)
+    if(media < 5 && tipo >= 3)
       return "Reprovado"
 
     if (media >= 5.5 && tipo === 4)
@@ -160,29 +161,41 @@ export default class SituMat extends React.Component {
     );
 
     return(
-        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-        <View >
+        <View style={{flex: 1}}>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{ fontWeight: 'bold', fontSize: 25, textAlign: 'center',}}>
-            {`${this.state.materia.nome}\n${this.state.materia.faltas}\n${this.state.materia.ab1}
-            \n${this.state.materia.ab2}\n${this.state.materia.reav}\n${this.state.materia.final}\n\n\n`}</Text>
+            {`${this.state.materia.nome}\n`}</Text>
+
+            <Text>{`
+            AB1: ${this.state.materia.ab1}         AB2: ${this.state.materia.ab2}
+            \nREAV: ${this.state.materia.reav}      FINAL: ${this.state.materia.final}
+            \n\nMÉDIA: ${this.state.materia.media}`}</Text>
             
             
         <Text></Text>
 
-        <Text>{`\n\nMÉDIA: ${this.state.materia.media}`}</Text> 
-        <Text>{`\n\nCONCEITO: ${this.state.materia.conceito}`}</Text>    
-        <Text>{`\n\nNível de Faltas: ${this.state.nvlFaltas}`}</Text>  
+        <Text style={{ fontWeight: 'bold', fontSize: 25, textAlign: 'center',}}>
+        
+        {`\n\nCONCEITO: ${this.state.materia.conceito}`}    
+        {`\n\nNível de Faltas: ${this.state.nvlFaltas}`}</Text>  
       </View>
 
+      <View style={{marginTop:0, flexDirection: 'row', alignItems:'center', justifyContent: 'space-between',
+        backgroundColor: "#012B74"}}>
+
         <TouchableOpacity
-        onPress={() => {this.setState({ faltas: true})}}>
-            <View><Text>Adicionar Faltas</Text></View>
+        onPress={() => {this.setState({ faltas: true})}}
+        style={[styles.button, {backgroundColor: '#0E37E8', marginRight:5}]}>
+            <View><Text style={styles.buttonText}>Adicionar Faltas</Text></View>
         </TouchableOpacity>
 
         <TouchableOpacity
-        onPress={() => {this.setState({ notas: true})}}>
-            <View><Text>Adicionar Notas</Text></View>
+        onPress={() => {this.setState({ notas: true})}}
+        style={[styles.button, {backgroundColor: '#0E37E8', marginLeft: 5}]}>
+            <View><Text style={styles.buttonText}>Adicionar Notas</Text></View>
         </TouchableOpacity>
+
+      </View>
 
         <DeleteMat 
         visible = {this.state.faltas}
@@ -206,5 +219,25 @@ export default class SituMat extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+
+
+  button:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 3,
+    height: 60,
+    width: 160,
+
+},
+
+buttonText:{
+  fontWeight: 'bold',
+  color: '#FFF',
+  fontSize: 20,
+},
+
+});
 
 
