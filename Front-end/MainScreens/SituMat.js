@@ -4,6 +4,7 @@ import api from '../Networking/Api';
 import MainScreen from './MainScreen';
 import DeleteMat from './DeleteMat';
 import Notas from './Notas';
+import DadosMat from './DadosMat';
 
 export default class SituMat extends React.Component {
 
@@ -35,6 +36,7 @@ export default class SituMat extends React.Component {
   componentDidMount(){
     //this.setState({id : this.props.navigation.getParam('id', null)});
     this.getMateria(this.props.navigation.getParam('id', null));
+    this.props.navigation.te
   }
 
   getMateria = async (id) =>{
@@ -150,6 +152,7 @@ export default class SituMat extends React.Component {
   }
 
   render() {
+    
     if(this.state.isLoading)
     return (
       <View style={{paddingVertical: 20, borderTopWidth: 1}}>
@@ -162,26 +165,10 @@ export default class SituMat extends React.Component {
 
     return(
         <View style={{flex: 1}}>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{ fontWeight: 'bold', fontSize: 25, textAlign: 'center',}}>
-            {`${this.state.materia.nome}\n`}</Text>
 
-            <Text>{`
-            AB1: ${this.state.materia.ab1}         AB2: ${this.state.materia.ab2}
-            \nREAV: ${this.state.materia.reav}      FINAL: ${this.state.materia.final}
-            \n\nMÉDIA: ${this.state.materia.media}`}</Text>
-            
-            
-        <Text></Text>
+        <DadosMat materia = {this.state.materia} nvl = {this.state.nvlFaltas}/>
 
-        <Text style={{ fontWeight: 'bold', fontSize: 25, textAlign: 'center',}}>
-        
-        {`\n\nCONCEITO: ${this.state.materia.conceito}`}    
-        {`\n\nNível de Faltas: ${this.state.nvlFaltas}`}</Text>  
-      </View>
-
-      <View style={{marginTop:0, flexDirection: 'row', alignItems:'center', justifyContent: 'space-between',
-        backgroundColor: "#012B74"}}>
+        <View style={{marginTop:0, flexDirection: 'row', alignItems:'center', justifyContent: 'space-between',}}>
 
         <TouchableOpacity
         onPress={() => {this.setState({ faltas: true})}}
@@ -195,7 +182,7 @@ export default class SituMat extends React.Component {
             <View><Text style={styles.buttonText}>Adicionar Notas</Text></View>
         </TouchableOpacity>
 
-      </View>
+        </View>
 
         <DeleteMat 
         visible = {this.state.faltas}

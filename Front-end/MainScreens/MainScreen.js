@@ -54,9 +54,6 @@ export default class MainScreen extends React.Component {
       this.getAllMaterias();
     }
 
-    //shouldComponentUpdate(){return true;}
-    //componentDidUpdate(){}
-
     getAllMaterias = async () => {
       try{
         const response = await api.get('/materias/');
@@ -83,12 +80,12 @@ export default class MainScreen extends React.Component {
 
     renderTopo = () =>{
       return (
-        <View style={{marginTop:0, flexDirection: 'row', alignItems:'center', justifyContent: 'space-between',
+        <View style={{marginTop:0, marginBottom:0, flexDirection: 'row', alignItems:'center', justifyContent: 'space-between',
         backgroundColor: "#012B74"}}>
 
           <TouchableOpacity 
           style={[styles.button, {marginRight: 5}]}
-          onPress = {() => {}}>
+          onPress={() => this.props.navigation.goBack()}>
           <Text style={styles.buttonText}>LogOut</Text>
           </TouchableOpacity>
 
@@ -103,9 +100,7 @@ export default class MainScreen extends React.Component {
     }
 
     deslog = async () =>{
-      //this.setState({ isLogged: false});
-      //await AsyncStorage.removeItem("@GerenciadorUniversitario:user");
-      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", '0');
+      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", 'false');
     }
     
 
@@ -121,10 +116,6 @@ export default class MainScreen extends React.Component {
       }catch (response){
         alert("Erro ao deletar!");
       }
-     }
-
-    teste = (nome) => {
-       alert("Vc clicou em: " + nome);
      }
 
     render(){

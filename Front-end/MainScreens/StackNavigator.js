@@ -1,14 +1,19 @@
 import React from 'react';
-import { AsyncStorage, View, Navigator } from 'react-native';
+import { AsyncStorage, View, Navigator, Button } from 'react-native';
 import api from '../Networking/Api';
 import MainScreen from './MainScreen';
 import { createStackNavigator } from 'react-navigation';
 import SituMat from './SituMat';
+import Login from '../LoginScreen/Login';
 
 
 export default class StackNavigator extends React.Component{
+
+
     render(){
-        return <RootStack deslog={this.props.deslog}/>
+        return ( 
+            <RootStack/>
+        );
     }
 }
 
@@ -16,10 +21,11 @@ export default class StackNavigator extends React.Component{
 
 const RootStack = createStackNavigator(
     {
+        Login: Login,
         Main: MainScreen,
         Situ: SituMat,
     },
     {
-        initialRouteName: 'Main',
+        initialRouteName: 'Main', //
     }
 );

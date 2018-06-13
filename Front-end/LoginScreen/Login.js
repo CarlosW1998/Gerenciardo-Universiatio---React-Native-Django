@@ -1,11 +1,11 @@
 import React from 'react';
 import { AsyncStorage, View, Navigator } from 'react-native';
-import api from './Networking/Api';
-import LoginScreen from './LoginScreen/LoginScreen';
-import MainScreen from './MainScreens/MainScreen';
-import StackNavigator from './MainScreens/StackNavigator';
+import api from '../Networking/Api';
+import LoginScreen from './LoginScreen';
+import MainScreen from '../MainScreens/MainScreen';
+import StackNavigator from '../MainScreens/StackNavigator';
 
-export default class App extends React.Component {
+export default class Login extends React.Component {
 
   constructor(props){
     super(props);
@@ -14,17 +14,9 @@ export default class App extends React.Component {
       user: null,
       pswd: '',
       token: '',
-      nada: '',
       
     }
   }
-
-  shouldComponentUpdate(){return true}
-  async componentDidUpdate(){
-    if(await AsyncStorage.getItem("@GerenciadorUniversitario:logged") === 'false')
-    this.setState({isLogged:false})
-  }
-
 
   logIn = async () => {
     try{
@@ -38,13 +30,17 @@ export default class App extends React.Component {
       });
       await AsyncStorage.setItem("@GerenciadorUniversitario:token", token);
       await AsyncStorage.setItem("@GerenciadorUniversitario:user", this.state.user);
-      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", 'true');
+      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", '1');
       
       this.setState({
         isLogged: true
       });
+
+      return true;
+
     }catch (response){
       alert("Dados inválidos, tente outra vez");
+      return false;
     }
   }
 
@@ -77,28 +73,19 @@ export default class App extends React.Component {
     });
   }
 
-  render() {
-    let user =  AsyncStorage.getItem("@GerenciadorUniversitario:user");
-   
-    if(!this.state.isLogged){
-      return(
-        <LoginScreen 
-        logIn = {this.logIn} 
-        signIn = {this.signIn}
-        getUser={this.getUser} 
-        getPassword = {this.getPassword}
-        />  
-      );
-    }else{
-      return (
-        <StackNavigator deslog={this.deslog} x = 'X'/>
-        //<MainScreen deslog={this.deslog}/>
-      );
-    }
 
-    /*return (
-      <StackNavigator/>
-    );*/
+  render() {
+    //let user =  AsyncStorage.getItem("@GerenciadorUniversitario:user");
+
+    return(
+     <LoginScreen 
+      logIn = {this.logIn} 
+      signIn = {this.signIn}
+      getUser={this.getUser} 
+      getPassword = {this.getPassword}
+      />  
+    );
+
   }
 }
 
