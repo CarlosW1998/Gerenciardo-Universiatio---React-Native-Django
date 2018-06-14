@@ -14,15 +14,22 @@ export default class App extends React.Component {
       user: null,
       pswd: '',
       token: '',
-      nada: '',
+      nada: 0,
       
     }
+    setInterval(() => {this.stillLogged()}, 1000);
   }
 
   shouldComponentUpdate(){return true}
-  async componentDidUpdate(){
-    if(await AsyncStorage.getItem("@GerenciadorUniversitario:logged") === 'false')
-    this.setState({isLogged:false})
+  async componentDidUpdate(){}
+
+  stillLogged = async () => {
+    let l = await AsyncStorage.getItem("@GerenciadorUniversitario:logged")
+    this.setState({ isLogged: l})
+  }
+
+  async componentDidMount (){
+    await AsyncStorage.setItem("@GerenciadorUniversitario:logged", '0');
   }
 
 
@@ -38,7 +45,7 @@ export default class App extends React.Component {
       });
       await AsyncStorage.setItem("@GerenciadorUniversitario:token", token);
       await AsyncStorage.setItem("@GerenciadorUniversitario:user", this.state.user);
-      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", 'true');
+      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", '1');
       
       this.setState({
         isLogged: true
@@ -80,7 +87,7 @@ export default class App extends React.Component {
   render() {
     let user =  AsyncStorage.getItem("@GerenciadorUniversitario:user");
    
-    if(!this.state.isLogged){
+    if(!this.state.isLogged || this.state.isLogged === '0'){
       return(
         <LoginScreen 
         logIn = {this.logIn} 

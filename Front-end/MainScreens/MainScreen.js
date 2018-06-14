@@ -85,7 +85,7 @@ export default class MainScreen extends React.Component {
 
           <TouchableOpacity 
           style={[styles.button, {marginRight: 5}]}
-          onPress={() => this.props.navigation.goBack()}>
+          onPress={() => this.deslog()}>
           <Text style={styles.buttonText}>LogOut</Text>
           </TouchableOpacity>
 
@@ -100,7 +100,7 @@ export default class MainScreen extends React.Component {
     }
 
     deslog = async () =>{
-      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", 'false');
+      await AsyncStorage.setItem("@GerenciadorUniversitario:logged", '0');
     }
     
 
