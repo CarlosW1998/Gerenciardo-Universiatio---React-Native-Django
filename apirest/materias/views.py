@@ -34,7 +34,7 @@ class listaDeMaterias(generics.ListCreateAPIView):
 
 class detalhesDasMaterias(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication)
-    permission_classes = (permissions.IsAuthenticated,)
+    Spermission_classes = (permissions.IsAuthenticated,)
     queryset = materias.objects.all()
     serializer_class = materiaSerializer
     def retrieve(self, request, pk) :
