@@ -26,7 +26,17 @@ SECRET_KEY = '(0b_x5vq=l04ss6e5k(irx)(9j4e*6x4yh#q!v30e!zp9p2q=^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.2.166', '192.168.0.105']
+#CROSS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = (
+    'localhost:4200',
+)
+CORS_ORIGIN_REGEX_WHITELIST = (
+    'localhost:4200',
+)
+
+ALLOWED_HOSTS = ['192.168.2.166', '192.168.0.105', '192.168.1.4', 'localhost']
 
 
 # Application definition
@@ -41,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'materias',
+    'corsheaders',
 ]
 JWT_AUTH = {
     'JWT_ENCODE_HANDLER':
@@ -91,6 +102,8 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE_CLASSES = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
