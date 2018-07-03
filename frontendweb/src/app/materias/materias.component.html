@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" routerLink = '/materias' (click) = 'listMateria()'>
+    Home
+  </a>
+  <a class="navbar-brand" routerLink = '/materias' (click) = 'addMateria()'>
+    Adicionar Materia
+  </a>
+  <a class="navbar-brand" routerLink = ''>
+    Logout
+  </a>
+</nav>
+<table class="table" *ngIf = 'currentview == 1'>
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Numero</th>
+      <th scope="col">Materia</th>
+      <th scope="col">Media</th>
+      <th scope="col">Conceito</th>
+    </tr>
+  </thead>
+  <tbody *ngFor = 'let materia of todasAsMaterias; index as i'>
+    <tr>
+      <button type="button" class="btn btn-secondary btn-sm">Deletar</button>
+      <td>{{i +1}}</td>
+      <td>{{materia.nome}}</td>
+      <td>{{materia.media}}</td>
+      <td>{{materia.conceito}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<form *ngIf = 'currentview == 2'>
+  <input class="form-control form-control-lg" type="text" placeholder="Nome" #Nome>
+  <input class="form-control" type="text" placeholder="AB1" #AB1>
+  <input class="form-control form-control-sm" type="text" placeholder="AB2" #AB2>
+  <input class="form-control form-control-sm" type="text" placeholder="Reavaliação" #reav>
+  <input class="form-control form-control-sm" type="text" placeholder="Final" #Final>
+  <input class="form-control form-control-sm" type="text" placeholder="Carga Horaria" #Carga>
+  <button type="button" class="btn btn-secondary btn-lg btn-block" (click) = 'adicionarNovaMateria(Nome.value, AB1.value, AB2.value, reav.value, Final.value, Carga.value)'>Adicionar Materia</button>
+  <h1>{{Erro}}</h1>
+</form>

@@ -6,22 +6,26 @@ import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 
 import { RouterModule, Routes } from '@angular/router';
+import { MateriasComponent } from './materias/materias.component';
 
 const appRoutes : Routes =   [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
-  {path: 'login', component: LoginComponent}
+  {path: 'login', component: LoginComponent},
+  {path: 'materias', component: MateriasComponent
+}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    MateriasComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule, 
     RouterModule.forRoot(
-      appRoutes
+      appRoutes,
     )
   ],
   providers: [],
