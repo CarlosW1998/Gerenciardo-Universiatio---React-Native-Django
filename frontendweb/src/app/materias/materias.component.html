@@ -19,15 +19,17 @@
       <th scope="col">Materia</th>
       <th scope="col">Media</th>
       <th scope="col">Conceito</th>
+      <th scope="col">#</th>
     </tr>
   </thead>
   <tbody *ngFor = 'let materia of todasAsMaterias; index as i'>
     <tr>
-      <button type="button" class="btn btn-secondary btn-sm">Deletar</button>
+      <button type="button" class="btn btn-secondary btn-sm" (click) = 'deletarMateria(materia.id)'>Deletar</button>
       <td>{{i +1}}</td>
       <td>{{materia.nome}}</td>
       <td>{{materia.media}}</td>
       <td>{{materia.conceito}}</td>
+      <button type="button" class="btn btn-secondary btn-sm">Detalhes</button>
     </tr>
   </tbody>
 </table>

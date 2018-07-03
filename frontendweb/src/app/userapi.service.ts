@@ -10,7 +10,7 @@ import { tick } from '@angular/core/testing';
   providedIn: 'root'
 })
 export class UserapiService {
-  rooturl = 'http://localhost:8000/';
+  rooturl = 'http://192.168.3.241:8000/';
   private tokenSource = new BehaviorSubject('default message');
   currentToken = this.tokenSource.asObservable();
 
@@ -18,7 +18,6 @@ export class UserapiService {
     headers: new HttpHeaders({
       'Access-Control-Allow-Origin' : '*',
       'Content-Type':  'application/json',
-      'Authorization' : 'JWT'
     })
   };
   constructor(private http : HttpClient) { }
@@ -54,5 +53,15 @@ export class UserapiService {
       })
     };
     return this.http.post<Materias>(this.rooturl + 'materias/', materia,  this.httpOptions);
+  }
+  deletemateria(token : string, id : number) : Observable<Materias> {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin' : '*',
+        'Content-Type':  'application/json',
+        'Authorization' : 'JWT ' + token
+      })
+    };
+    return this.http.delete<Materias>(this.rooturl + 'materias/' + String(id), this.httpOptions);
   }
 }

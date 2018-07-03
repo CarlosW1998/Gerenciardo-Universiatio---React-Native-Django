@@ -26,6 +26,9 @@ export class LoginComponent implements OnInit {
       this.userapi.changeToken(this.token.token);
       this.router.navigate(['/materias'])
     }
+    else {
+      this.Erro = 'Usuario ou Senha incorrets';
+    }
   }
 
   adduser(user: string, password: string){
@@ -33,6 +36,7 @@ export class LoginComponent implements OnInit {
     this.currentuser.password = password;
     this.userapi.adduser(this.currentuser).subscribe();
     this.userapi.gettoken(this.currentuser).subscribe(mytoken => this.token = mytoken);
+    console.log(this.token.token);
     this.userapi.changeToken(this.token.token);
     this.router.navigate(['/materias']);
   }

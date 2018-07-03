@@ -1,4 +1,5 @@
 export class Materias {
+    id: number;
     usuario: number;
     nome: string;
     ab1: number;

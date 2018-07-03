@@ -36,7 +36,7 @@ CORS_ORIGIN_REGEX_WHITELIST = (
     'localhost:4200',
 )
 
-ALLOWED_HOSTS = ['192.168.2.166', '192.168.0.105', '192.168.1.4', 'localhost']
+ALLOWED_HOSTS = ['192.168.2.166', '192.168.0.105', '192.168.1.4', '192.168.3.241', 'localhost']
 
 
 # Application definition
