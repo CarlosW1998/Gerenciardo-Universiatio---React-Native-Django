@@ -14,12 +14,12 @@
 <table class="table" *ngIf = 'currentview == 1'>
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">-</th>
       <th scope="col">Numero</th>
       <th scope="col">Materia</th>
       <th scope="col">Media</th>
       <th scope="col">Conceito</th>
-      <th scope="col">#</th>
+      <th scope="col">-</th>
     </tr>
   </thead>
   <tbody *ngFor = 'let materia of todasAsMaterias; index as i'>
@@ -29,7 +29,7 @@
       <td>{{materia.nome}}</td>
       <td>{{materia.media}}</td>
       <td>{{materia.conceito}}</td>
-      <button type="button" class="btn btn-secondary btn-sm">Detalhes</button>
+      <button type="button" class="btn btn-secondary btn-sm" (click) = 'detalhesmaterias(materia)'>Detalhes</button>
     </tr>
   </tbody>
 </table>
@@ -44,3 +44,12 @@
   <button type="button" class="btn btn-secondary btn-lg btn-block" (click) = 'adicionarNovaMateria(Nome.value, AB1.value, AB2.value, reav.value, Final.value, Carga.value)'>Adicionar Materia</button>
   <h1>{{Erro}}</h1>
 </form>
+
+<table class="table" *ngIf = 'currentview == 3'>
+  <tbody>
+    <tr>
+      <td>Nome:</td>
+      <td>{{mymateria.no  me}}</td>
+    </tr>
+  </tbody>
+</table>

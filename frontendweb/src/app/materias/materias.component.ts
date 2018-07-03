@@ -14,6 +14,7 @@ export class MateriasComponent implements OnInit {
   Erro : string;
   token : string;
   currentview = 1;
+  mymateria : Materias;
   novaMateria : Materias = {
     id: 1,
     usuario: 1,
@@ -44,6 +45,10 @@ export class MateriasComponent implements OnInit {
   deletarMateria(id : number) {
     this.userapi.deletemateria(this.token, id).subscribe();
     this.userapi.getMaterias(this.token).subscribe(data => this.todasAsMaterias = data);
+  }
+  detalhesmaterias(materia : Materias) {
+    this.mymateria = materia;
+    this.currentview = 3;
   }
   adicionarNovaMateria(Nome : string, AB1: number, AB2 : number, reav: number, final : number, carga_horaria : number)
   {
