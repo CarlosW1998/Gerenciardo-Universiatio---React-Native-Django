@@ -4,6 +4,7 @@ import { Materias } from './materias';
 import { Router } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
 import { AuthService} from '../auth.service'
+import { LittledetailsService } from '../littledetails.service'
 
 
 @Component({
@@ -30,7 +31,7 @@ export class MateriasComponent implements OnInit {
     conceito: ''
   }
 
-  constructor(private userapi :UserapiService, private router : Router, private authapi : AuthService) { }
+  constructor(private userapi :UserapiService, private router : Router, private authapi : AuthService, private detail : LittledetailsService) { }
   todasAsMaterias : Materias[];
   ngOnInit() {
     this.userapi.getMaterias(this.authapi.gettoken()).subscribe(data => this.todasAsMaterias = data);
@@ -55,7 +56,7 @@ export class MateriasComponent implements OnInit {
   }
   adicionarNovaMateria(Nome : string, AB1: number, AB2 : number, reav: number, final : number, carga_horaria : number)
   {
-    if(AB1 > 10 || AB1 < 0 || AB2 > 10 || AB2 < 0 || reav > 10 || reav < 0 || final > 10 || final < 0 || Nome == '') 
+    if(AB1 > 10 || AB1 < 0 || AB2 > 10 || AB2 < 0 || reav > 10 || reav < 0 || final > 10 || final < 0 || Nome == '' || (carga_horaria != 30 && carga_horaria != 60)) 
     {
       this.Erro = 'Dados invalidos';
       return ;
@@ -64,8 +65,9 @@ export class MateriasComponent implements OnInit {
     this.novaMateria.ab1 = AB1;
     this.novaMateria.ab2 = AB2;
     this.novaMateria.reav = reav;
+    this.novaMateria.media = this.detail.calcMedia(AB1, AB2, reav, final);
     this.novaMateria.carga_horaria = carga_horaria;
-    this.novaMateria.conceito = 'MT';
+    this.novaMateria.conceito =  this.detail.conceito(this.novaMateria.media, this.novaMateria.faltas, this.novaMateria.max_faltas);
     this.userapi.addMateria(this.authapi.gettoken(), this.novaMateria).subscribe();
     this.todasAsMaterias.push(this.novaMateria);
     this.listMateria();
@@ -80,7 +82,7 @@ export class MateriasComponent implements OnInit {
     if(reav){this.mymateria.reav = reav}
     if(Final){this.mymateria.final = Final}
     if(faltas){this.mymateria.faltas = faltas}
-    this.userapi.updatemateria(this.authapi.gettoken, this.mymateria.id, this.mymateria);
+    this.userapi.updatemateria(this.authapi.gettoken(), this.mymateria.id, this.mymateria);
     this.detalhesmaterias(this.mymateria);
   }
 }
