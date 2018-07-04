@@ -27,7 +27,7 @@ SECRET_KEY = '(0b_x5vq=l04ss6e5k(irx)(9j4e*6x4yh#q!v30e!zp9p2q=^'
 DEBUG = True
 
 #CROSS
-CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
@@ -101,7 +101,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -133,6 +133,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'apirest.wsgi.application'
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Database

@@ -3,6 +3,7 @@ import { UserapiService } from '../userapi.service';
 import { Materias } from './materias';
 import { Router } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
+import { AuthService} from '../auth.service'
 
 
 @Component({
@@ -12,7 +13,6 @@ import { Route } from '@angular/compiler/src/core';
 })
 export class MateriasComponent implements OnInit {
   Erro : string;
-  token : string;
   currentview = 1;
   mymateria : Materias;
   novaMateria : Materias = {
@@ -30,11 +30,10 @@ export class MateriasComponent implements OnInit {
     conceito: ''
   }
 
-  constructor(private userapi :UserapiService, private router : Router) { }
+  constructor(private userapi :UserapiService, private router : Router, private authapi : AuthService) { }
   todasAsMaterias : Materias[];
   ngOnInit() {
-    this.userapi.currentToken.subscribe(token => this.token = token);
-    this.userapi.getMaterias(this.token).subscribe(data => this.todasAsMaterias = data);
+    this.userapi.getMaterias(this.authapi.gettoken()).subscribe(data => this.todasAsMaterias = data);
   }
   addMateria(){
     this.currentview = 2;
@@ -45,9 +44,10 @@ export class MateriasComponent implements OnInit {
   editmateri(){
     this.currentview = 4;
   }
-  deletarMateria(id : number) {
-    this.userapi.deletemateria(this.token, id).subscribe();
-    this.userapi.getMaterias(this.token).subscribe(data => this.todasAsMaterias = data);
+  deletarMateria(id : number, i : number) {
+    this.userapi.deletemateria(this.authapi.gettoken(), id).subscribe(()=>{
+      this.todasAsMaterias.splice(i, 1);
+    });
   }
   detalhesmaterias(materia : Materias) {
     this.mymateria = materia;
@@ -66,8 +66,12 @@ export class MateriasComponent implements OnInit {
     this.novaMateria.reav = reav;
     this.novaMateria.carga_horaria = carga_horaria;
     this.novaMateria.conceito = 'MT';
-    this.userapi.addMateria(this.token, this.novaMateria).subscribe();
-    this.userapi.getMaterias(this.token).subscribe(data => this.todasAsMaterias = data);
+    this.userapi.addMateria(this.authapi.gettoken(), this.novaMateria).subscribe();
+    this.todasAsMaterias.push(this.novaMateria);
+    this.listMateria();
+  }
+  logout() {
+    this.authapi.deleteToken();
   }
   update(Nome : string, AB1 : number, AB2 : number, reav : number, Final : number, Carga : number) {
     

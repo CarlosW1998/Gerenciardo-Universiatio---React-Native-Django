@@ -7,7 +7,7 @@
   <a class="navbar-brand" routerLink = '/materias' (click) = 'addMateria()'>
     Adicionar Materia
   </a>
-  <a class="navbar-brand" routerLink = ''>
+  <a class="navbar-brand" (click) = 'logout()' routerLink = ''>
     Logout
   </a>
 </nav>
@@ -24,7 +24,7 @@
   </thead>
   <tbody *ngFor = 'let materia of todasAsMaterias; index as i'>
     <tr>
-      <button type="button" class="btn btn-secondary btn-sm" (click) = 'deletarMateria(materia.id)'>Deletar</button>
+      <button type="button" class="btn btn-secondary btn-sm" (click) = 'deletarMateria(materia.id, i)'>Deletar</button>
       <td>{{i +1}}</td>
       <td>{{materia.nome}}</td>
       <td>{{materia.media}}</td>
