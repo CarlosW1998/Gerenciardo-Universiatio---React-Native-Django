@@ -49,7 +49,55 @@
   <tbody>
     <tr>
       <td>Nome:</td>
-      <td>{{mymateria.no  me}}</td>
+      <td>{{mymateria.nome}}</td>
+    </tr>
+    <tr>
+      <td>AB1:</td>
+      <td>{{mymateria.ab1}}</td>
+    </tr>
+    <tr>
+      <td>AB2:</td>
+      <td>{{mymateria.ab2}}</td>
+    </tr>
+    <tr>
+      <td>Reavaliação:</td>
+      <td>{{mymateria.reav}}</td>
+    </tr>
+    <tr>
+      <td>Final:</td>
+      <td>{{mymateria.final}}</td>
+    </tr>
+    <tr>
+      <td>Media:</td>
+      <td>{{mymateria.media}}</td>
+    </tr>
+    <tr>
+      <td>Carga Horaria:</td>
+      <td>{{mymateria.carga_horaria}}</td>
+    </tr>
+    <tr>
+      <td>Faltas:</td>
+      <td>{{mymateria.faltas}}</td>
+    </tr>
+    <tr>
+      <td>Maximo de Faltas:</td>
+      <td>{{mymateria.max_faltas}}</td>
+    </tr>
+    <tr>
+      <td>Conceito:</td>
+      <td>{{mymateria.conceito}}</td>
     </tr>
   </tbody>
 </table>
+<button type="button" class="btn btn-secondary btn-lg btn-block" *ngIf = 'currentview == 3' (click) = ' editmateri()'>Editar Materia</button>
+
+<form *ngIf = 'currentview == 4'>
+  <input class="form-control form-control-lg" type="text" placeholder="{{mymateria.nome}}" #Nome>
+  <input class="form-control" type="text" placeholder="{{mymateria.ab1}}" #AB1>
+  <input class="form-control form-control-sm" type="text" placeholder="{{mymateria.ab2}}" #AB2>
+  <input class="form-control form-control-sm" type="text" placeholder="{{mymateria.reav}}" #reav>
+  <input class="form-control form-control-sm" type="text" placeholder="{{mymateria.final}}" #Final>
+  <input class="form-control form-control-sm" type="text" placeholder="{{mymateria.carga_horaria}}" #Carga>
+  <button type="button" class="btn btn-secondary btn-lg btn-block" (click) = 'update(Nome.value, AB1.value, AB2.value, reav.value, Final.value, Carga.value)'>Salvar Mudanças</button>
+  <h1>{{Erro}}</h1>
+</form>

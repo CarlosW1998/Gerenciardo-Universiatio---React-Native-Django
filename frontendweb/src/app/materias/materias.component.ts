@@ -42,6 +42,9 @@ export class MateriasComponent implements OnInit {
   listMateria(){
     this.currentview = 1;
   }
+  editmateri(){
+    this.currentview = 4;
+  }
   deletarMateria(id : number) {
     this.userapi.deletemateria(this.token, id).subscribe();
     this.userapi.getMaterias(this.token).subscribe(data => this.todasAsMaterias = data);
@@ -65,5 +68,8 @@ export class MateriasComponent implements OnInit {
     this.novaMateria.conceito = 'MT';
     this.userapi.addMateria(this.token, this.novaMateria).subscribe();
     this.userapi.getMaterias(this.token).subscribe(data => this.todasAsMaterias = data);
+  }
+  update(Nome : string, AB1 : number, AB2 : number, reav : number, Final : number, Carga : number) {
+    
   }
 }
