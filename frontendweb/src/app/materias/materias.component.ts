@@ -73,7 +73,14 @@ export class MateriasComponent implements OnInit {
   logout() {
     this.authapi.deleteToken();
   }
-  update(Nome : string, AB1 : number, AB2 : number, reav : number, Final : number, Carga : number) {
-    
+  update(Nome : string, AB1 : number, AB2 : number, reav : number, Final : number, faltas : number) {
+    if(Nome){this.mymateria.nome = Nome}
+    if(AB1){this.mymateria.ab1 = AB1}
+    if(AB2){this.mymateria.ab2 = AB2}
+    if(reav){this.mymateria.reav = reav}
+    if(Final){this.mymateria.final = Final}
+    if(faltas){this.mymateria.faltas = faltas}
+    this.userapi.updatemateria(this.authapi.gettoken, this.mymateria.id, this.mymateria);
+    this.detalhesmaterias(this.mymateria);
   }
 }
