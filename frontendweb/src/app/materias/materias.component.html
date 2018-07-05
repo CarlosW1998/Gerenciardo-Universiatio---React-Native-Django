@@ -18,7 +18,7 @@
       <th scope="col">Numero</th>
       <th scope="col">Materia</th>
       <th scope="col">Media</th>
-      <th scope="col">Conceito</th>
+      <th scope="col">Conceito</th>      
       <th scope="col">-</th>
     </tr>
   </thead>
@@ -29,7 +29,7 @@
       <td>{{materia.nome}}</td>
       <td>{{materia.media}}</td>
       <td>{{materia.conceito}}</td>
-      <button type="button" class="btn btn-secondary btn-sm" (click) = 'detalhesmaterias(materia)'>Detalhes</button>
+      <button type="button" class="btn btn-secondary btn-sm" (click) = 'detalhesmaterias(materia, i)'>Detalhes</button>
     </tr>
   </tbody>
 </table>
@@ -92,12 +92,12 @@
 <button type="button" class="btn btn-secondary btn-lg btn-block" *ngIf = 'currentview == 3' (click) = ' editmateri()'>Editar Materia</button>
 
 <form *ngIf = 'currentview == 4'>
-  <input class="form-control form-control-lg" type="text" placeholder="{{mymateria.nome}}" #Nome>
-  <input class="form-control" type="text" placeholder="{{mymateria.ab1}}" #AB1>
-  <input class="form-control form-control-sm" type="text" placeholder="{{mymateria.ab2}}" #AB2>
-  <input class="form-control form-control-sm" type="text" placeholder="{{mymateria.reav}}" #reav>
-  <input class="form-control form-control-sm" type="text" placeholder="{{mymateria.final}}" #Final>
-  <input class="form-control form-control-sm" type="text" placeholder="{{mymateria.faltas}}" #faltas>
+  <input class="form-control form-control-lg" type="text" placeholder="Nome : {{mymateria.nome}}" #Nome>
+  <input class="form-control" type="text" placeholder="AB1 : {{mymateria.ab1}}" #AB1>
+  <input class="form-control form-control-sm" type="text" placeholder="AB2 : {{mymateria.ab2}}" #AB2>
+  <input class="form-control form-control-sm" type="text" placeholder="Reavaliação : {{mymateria.reav}}" #reav>
+  <input class="form-control form-control-sm" type="text" placeholder="Final : {{mymateria.final}}" #Final>
+  <input class="form-control form-control-sm" type="text" placeholder="Faltas : {{mymateria.faltas}}" #faltas>
   <button type="button" class="btn btn-secondary btn-lg btn-block" (click) = 'update(Nome.value, AB1.value, AB2.value, reav.value, Final.value, faltas.value)'>Salvar Mudanças</button>
   <h1>{{Erro}}</h1>
 </form>

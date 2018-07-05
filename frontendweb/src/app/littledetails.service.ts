@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { NumberValueAccessor } from '@angular/forms/src/directives';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LittledetailsService {
-
+  media = 0;
   constructor() { }
   conceito(media : number, nivelFaltas : number){
     if (media >= 7)
@@ -25,16 +26,13 @@ export class LittledetailsService {
     return "Matriculado"
   }
   calcMedia(ab1 :number, ab2 : number, reav : number, final : number){
-    media = (ab1 + ab2) /2;
+    this.media = (Number(ab1) + Number(ab2)) /2;
     if (reav){
-      if(ab1 < ab2 && ab2 < reav){media = (reav + ab2) /2}
-
-      if(ab2 < ab1 && ab2 < reav){media = (ab1 + reav)/2)}
+      if(ab1 < ab2 && ab2 < reav){this.media = (Number(reav) + Number(ab2)) /2}
+      if(ab2 < ab1 && ab2 < reav){this.media = (Number(ab1) + Number(reav))/2)}
     }
-    if(final){media = ((0.6*media) + (0.4*final))}
+    if(final != 0){this.media = ((0.6*Number(this.media)) + (0.4*Number(final)))}
     
-    return media;
+    return this.media;
   }
-
-a : number;
 }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
 import { AuthService} from '../auth.service'
 import { LittledetailsService } from '../littledetails.service'
+import { ThrowStmt } from '@angular/compiler';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { LittledetailsService } from '../littledetails.service'
 export class MateriasComponent implements OnInit {
   Erro : string;
   currentview = 1;
+  currentindex : number;
   mymateria : Materias;
   novaMateria : Materias = {
     id: 1,
@@ -50,7 +52,8 @@ export class MateriasComponent implements OnInit {
       this.todasAsMaterias.splice(i, 1);
     });
   }
-  detalhesmaterias(materia : Materias) {
+  detalhesmaterias(materia : Materias, id : number) {
+    this.currentindex = id;
     this.mymateria = materia;
     this.currentview = 3;
   }
@@ -65,13 +68,18 @@ export class MateriasComponent implements OnInit {
     this.novaMateria.ab1 = AB1;
     this.novaMateria.ab2 = AB2;
     this.novaMateria.reav = reav;
-    this.novaMateria.media = this.detail.calcMedia(AB1, AB2, reav, final);
+    this.novaMateria.final = final; 
     this.novaMateria.carga_horaria = carga_horaria;
-    this.novaMateria.conceito =  this.detail.conceito(this.novaMateria.media, this.novaMateria.faltas, this.novaMateria.max_faltas);
+    this.novaMateria.media = this.detail.calcMedia(AB1, AB2, reav, final);
+    if(this.novaMateria.carga_horaria == 30) {this.novaMateria.max_faltas = 7}
+    if(this.novaMateria.carga_horaria == 60) {this.novaMateria.max_faltas = 14}
+    this.novaMateria.conceito =  this.detail.conceito(this.novaMateria.media, this.novaMateria.faltas / this.novaMateria.max_faltas);
+
     this.userapi.addMateria(this.authapi.gettoken(), this.novaMateria).subscribe();
     this.todasAsMaterias.push(this.novaMateria);
     this.listMateria();
   }
+  
   logout() {
     this.authapi.deleteToken();
   }
@@ -82,7 +90,11 @@ export class MateriasComponent implements OnInit {
     if(reav){this.mymateria.reav = reav}
     if(Final){this.mymateria.final = Final}
     if(faltas){this.mymateria.faltas = faltas}
-    this.userapi.updatemateria(this.authapi.gettoken(), this.mymateria.id, this.mymateria);
+    this.mymateria.media = this.detail.calcMedia(this.mymateria.ab1, this.mymateria.ab2, this.mymateria.reav, this.mymateria.final);
+    this.novaMateria.conceito =  this.detail.conceito(this.mymateria.media, this.mymateria.faltas / this.mymateria.max_faltas);
+
+    this.userapi.updatemateria(this.authapi.gettoken(), this.mymateria.id, this.mymateria).subscribe();
+    this.todasAsMaterias[this.currentindex] = this.mymateria;
     this.detalhesmaterias(this.mymateria);
   }
 }
