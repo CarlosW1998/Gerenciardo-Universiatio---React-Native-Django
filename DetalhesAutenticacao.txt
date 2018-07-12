@@ -1,0 +1,24 @@
+Autenticacao:
+{
+"username" : >nome<,
+"password" : >senha<,
+"client_id" : bj3zztPhb0gJllS46YjvG5NwqJjsdYXzpLQQCjE2,
+"client_secret" : KtOCdgJDTqJpDlPFeUqnGS68bdFyZdT6UUblWVkrGqBGQOE4ELIu3at0eqMZmaVyeDffrO6PakXE9REp1FcGaecxtguZBHoDiDjtyKyTa2DpMfBbD9bFjdtRt9nuWleD,
+"grant_type" : password
+}
+
+Headers para GET/POST/PUT/DELETE de materias:
+{
+Authorization : Bearer >token<
+}
+
+Body para POST/PUT:
+{
+"dados" : {"nome": >nome<, "carga_horaria": >carga<, "ab1":0.0, "ab2":0.0, "reav":0.0, "final":0.0, "media":0.0, "faltas":0, "max_faltas": >max_faltas<, "conceito":"Matriculado"}
+}
+
+URLS:
+Autenticacao: http://localhost:8000/o/token/
+Materias: http://localhost:8000/materias/
+Criar User: http://localhost:8000/criarusuario/
+
