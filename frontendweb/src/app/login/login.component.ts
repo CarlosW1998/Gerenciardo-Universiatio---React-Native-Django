@@ -19,16 +19,13 @@ export class LoginComponent implements OnInit {
   login(user: string, password: string) {
     this.currentuser.username = user;
     this.currentuser.password = password;    
-    this.apiauth.login(this.currentuser);
-    if(this.apiauth.gettoken()){this.router.navigate(['/materias'])}
-    else {this.Erro = 'Usuario ou senha invalidos'}
+    this.apiauth.login(this.currentuser, this.router);
   }
 
   adduser(user: string, password: string){
     this.currentuser.username = user;
     this.currentuser.password = password;
     this.userapi.adduser(this.currentuser).subscribe();
-    this.apiauth.login(this.currentuser);
-    this.router.navigate(['/materias']);
+    this.apiauth.login(this.currentuser, this.router);
   }
 }
